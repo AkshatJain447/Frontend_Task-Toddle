@@ -56,7 +56,7 @@ const ModuleLinkItem = ({ module, open, toggleModal }) => {
           <BsThreeDotsVertical />
         </div>
       </div>
-      <EditMenu open={open} module={module} />
+      <EditMenu open={open} module={module} toggleModal={toggleModal} />
     </>
   );
 };
