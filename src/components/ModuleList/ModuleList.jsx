@@ -36,7 +36,14 @@ const ModuleList = () => {
               </div>
             );
           } else {
-            return <ModuleLinkItem module={item} key={item.mId} />;
+            return (
+              <ModuleLinkItem
+                open={openMenuId === item.mId}
+                toggleModal={() => toggleModal(item.mId)}
+                module={item}
+                key={item.mId}
+              />
+            );
           }
         })}
       </SortableContext>
