@@ -21,16 +21,33 @@ function App() {
     setModuleList((prevList) => [...prevList, value]);
   };
 
+  const handleRenameOrDelete = (mId, operation, newName = null) => {
+    const updateItem = (list) => {
+      return list
+        .map((item) => {
+          if (item.mId === mId) {
+            if (operation === "rename") {
+              return { ...item, name: newName };
+            } else if (operation === "delete") {
+              return null;
+            }
+          } else if (item.sublist) {
+            return { ...item, sublist: updateItem(item.sublist) };
+          }
+          return item;
+        })
+        .filter(Boolean);
+    };
+
+    setModuleList((prevList) => updateItem(prevList));
+  };
+
   const delModuleItem = (mId) => {
-    setModuleList((prevList) => prevList.filter((item) => item.mId !== mId));
+    handleRenameOrDelete(mId, "delete");
   };
 
   const renameModuleItem = (mId, newName) => {
-    setModuleList((prevList) =>
-      prevList.map((item) =>
-        item.mId === mId ? { ...item, name: newName } : item
-      )
-    );
+    handleRenameOrDelete(mId, "rename", newName);
   };
 
   const handleDragEnd = (event) => {
@@ -78,9 +95,8 @@ function App() {
       );
 
       if (draggedItem.type === "module") {
-        // If dragged item is a module, reorder modules
         if (targetItem.type === "module") {
-          // Only allow reordering with other modules
+          // reordering with other modules
           const [movedModule] = draggedParent.splice(draggedIndex, 1);
           targetParent.splice(targetIndex, 0, movedModule);
         }
@@ -88,7 +104,7 @@ function App() {
         draggedItem.type !== "module" &&
         targetItem.type !== "module"
       ) {
-        // If both dragged and target items are non-modules, reorder them
+        // If both dragged and target items are non-modules
         if (draggedParent === targetParent) {
           const [movedItem] = draggedParent.splice(draggedIndex, 1);
           targetParent.splice(targetIndex, 0, movedItem);
@@ -97,7 +113,7 @@ function App() {
         draggedItem.type !== "module" &&
         targetItem.type === "module"
       ) {
-        // If dragged item is not a module and target item is a module, move to sublist
+        // If dragged item is not a module and target item is a module
         const targetModule = targetParent[targetIndex];
         targetModule.sublist.push(draggedItem);
         draggedParent.splice(draggedIndex, 1);
@@ -106,7 +122,7 @@ function App() {
         targetItem.type !== "module" &&
         draggedParent !== newModuleList
       ) {
-        // If dragged item is a non-module and target item is not a module and dragged out of a sublist
+        // If dragged item is a non-module and target item is not a module
         const [movedItem] = draggedParent.splice(draggedIndex, 1);
         const newIndex = newModuleList.findIndex(
           (item) => item.mId === over.id
@@ -117,10 +133,6 @@ function App() {
       return newModuleList;
     });
   };
-
-  useEffect(() => {
-    console.log(moduleList);
-  }, [moduleList]);
 
   return (
     <ModuleListContext.Provider
