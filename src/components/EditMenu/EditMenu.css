@@ -1,0 +1,13 @@
+.menu-content {
+  opacity: 0;
+  transform: translateY(-5%);
+  transition: transform 150ms ease-in-out, opacity 100ms ease-in-out;
+  pointer-events: none;
+}
+
+.menuOpen {
+  background: white;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
