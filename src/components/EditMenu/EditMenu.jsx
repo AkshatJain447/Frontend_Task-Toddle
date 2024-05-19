@@ -34,7 +34,7 @@ const EditMenu = ({ open, module, toggleModal }) => {
   return (
     <>
       <div
-        className={`absolute right-[155px] -translate-y-3 w-[200px] flex flex-col justify-center items-start gap-1 rounded-lg shadow-xl border py-1 menu-content ${
+        className={`absolute right-[30px] lg:right-[155px] -translate-y-3 w-[200px] flex flex-col justify-center items-start gap-1 rounded-lg shadow-xl border py-1 menu-content ${
           open ? "menuOpen" : ""
         }`}
       >

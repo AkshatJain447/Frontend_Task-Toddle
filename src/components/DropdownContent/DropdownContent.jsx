@@ -26,7 +26,7 @@ const DropdownContent = ({ open }) => {
   return (
     <>
       <div
-        className={`absolute right-[80px] w-[200px] flex flex-col justify-center items-start gap-1 rounded-lg shadow-xl border py-1 dropdown-content ${
+        className={`absolute right-[10px] lg:right-[80px] w-[200px] flex flex-col justify-center items-start gap-1 rounded-lg shadow-xl border py-1 dropdown-content ${
           open ? "dropOpen" : ""
         }`}
       >
