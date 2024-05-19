@@ -10,6 +10,15 @@ import ModuleLinkItem from "../ModuleLinkItem/ModuleLinkItem";
 const ModuleList = () => {
   const { moduleList } = useContext(ModuleListContext);
   const [openMenuId, setOpenMenuId] = useState(null);
+  const [openMenuIds, setOpenMenuIds] = useState([]);
+
+  const toggleModule = (mId) => {
+    setOpenMenuIds((prevIds) =>
+      prevIds.includes(mId)
+        ? prevIds.filter((prevId) => prevId !== mId)
+        : [...prevIds, mId]
+    );
+  };
 
   const toggleModal = (id) => {
     setOpenMenuId(openMenuId === id ? null : id);
@@ -29,10 +38,13 @@ const ModuleList = () => {
                   module={item}
                   open={openMenuId === item.mId}
                   toggleModal={() => toggleModal(item.mId)}
+                  toggleModule={() => toggleModule(item.mId)}
                 />
-                {item.sublist && item.sublist.length > 0 && (
-                  <div className="ml-4">{renderList(item.sublist)}</div>
-                )}
+                {openMenuIds.includes(item.mId) &&
+                  item.sublist &&
+                  item.sublist.length > 0 && (
+                    <div className="ml-4">{renderList(item.sublist)}</div>
+                  )}
               </div>
             );
           } else {

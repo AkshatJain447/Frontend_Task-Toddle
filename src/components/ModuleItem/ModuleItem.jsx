@@ -3,8 +3,11 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { MdOutlineArrowDropDownCircle } from "react-icons/md";
 import EditMenu from "../EditMenu/EditMenu";
+import { useState } from "react";
 
-const ModuleItem = ({ module, open, toggleModal }) => {
+const ModuleItem = ({ module, open, toggleModal, toggleModule }) => {
+  const [iconState, setIconState] = useState(false);
+
   const id = module.mId;
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
@@ -12,6 +15,11 @@ const ModuleItem = ({ module, open, toggleModal }) => {
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
+  };
+
+  const handleMinimize = () => {
+    setIconState(!iconState);
+    toggleModule(module.mId);
   };
 
   return (
@@ -24,9 +32,14 @@ const ModuleItem = ({ module, open, toggleModal }) => {
         className="flex justify-between items-center border p-2 rounded-md text-lg mt-2 bg-white"
       >
         <div className="flex ml-2 gap-3 w-fit items-center">
-          <MdOutlineArrowDropDownCircle className="text-4xl text-slate-700 p-1 rounded-md" />
+          <MdOutlineArrowDropDownCircle
+            className={`text-4xl text-slate-700 p-1 rounded-md ${
+              iconState ? "rotate-180" : ""
+            } transition-all duration-150`}
+            onMouseDown={handleMinimize}
+          />
           <div>
-            <h1 key={module.mId}>{module.name}</h1>
+            <h1>{module.name}</h1>
             {module.sublist.length > 0 ? (
               <p className="text-sm text-slate-600">
                 {module.sublist.length} items
